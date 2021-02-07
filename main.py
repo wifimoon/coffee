@@ -44,7 +44,8 @@ class MyWidget(QMainWindow):
                 or self.dialog.lineEdit_4.text() == '' \
                 or self.dialog.lineEdit_5.text() == '' \
                 or self.dialog.lineEdit_6.text() == ''\
-                or self.dialog.lineEdit_7.text() == '':
+                or self.dialog.lineEdit_7.text() == ''\
+                or not self.dialog.lineEdit_7.text().isdigit():
             self.dialog.label_5.setText('Неверно заполнена форма')
         else:
             with sqlite3.connect('coffee.sqlite') as con:

@@ -1,15 +1,16 @@
 import sys
 import sqlite3
-from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem
+from untitled import Ui_Form
+from dialog import Dlg
 
 
-class MyWidget(QMainWindow):
+class MyWidget(QMainWindow, Ui_Form):
     def __init__(self):
         super().__init__()
-        uic.loadUi('untitled.ui', self)
-        self.dialog = uic.loadUi('dialog.ui')
+        self.setupUi(self)
+        self.dialog = Dlg()
         self.pushButton.clicked.connect(self.run)
         self.tableWidget.setColumnCount(7)
         self.tableWidget.setRowCount(0)
@@ -22,9 +23,7 @@ class MyWidget(QMainWindow):
     def changed(self):
         with sqlite3.connect('coffee.sqlite') as con:
             cur = con.cursor()
-            result = cur.execute(f"""
-            select * from coffee
-            """).fetchall()
+            result = cur.execute(f"""select * from coffee""").fetchall()
         self.tableWidget.setRowCount(0)
         for i, row in enumerate(result):
             self.tableWidget.setRowCount(
@@ -44,8 +43,7 @@ class MyWidget(QMainWindow):
                 or self.dialog.lineEdit_4.text() == '' \
                 or self.dialog.lineEdit_5.text() == '' \
                 or self.dialog.lineEdit_6.text() == ''\
-                or self.dialog.lineEdit_7.text() == ''\
-                or not self.dialog.lineEdit_7.text().isdigit():
+                or self.dialog.lineEdit_7.text() == '':
             self.dialog.label_5.setText('Неверно заполнена форма')
         else:
             with sqlite3.connect('coffee.sqlite') as con:
